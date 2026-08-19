@@ -1,0 +1,457 @@
+{% extends 'magazine/base.html' %}
+{% load static %}
+
+{% block title %}Be a Queen Magazine — Le média qui élève la femme africaine{% endblock title %}
+
+{% block content %}
+
+<!-- ===================== HERO ===================== -->
+<section class="bg-white relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 grid lg:grid-cols-2 min-h-[88vh] items-center gap-12 py-16 lg:py-0">
+    <!-- Texte -->
+    <div class="order-2 lg:order-1 py-12 lg:py-0">
+      <div class="inline-flex items-center gap-2 bg-[#FFF0F5] border border-[#FF1493]/20 px-4 py-2 text-[11px] font-bold tracking-widest uppercase text-[#FF1493] mb-8">
+        <i class="fa-solid fa-crown text-[#D4AF37]"></i>
+        Be a Queen Magazine — Depuis 2026
+      </div>
+      <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.08] tracking-tight text-black mb-6">
+        Inspire-toi.<br>
+        Évolue.<br>
+        <em class="italic text-[#FF1493]">Prends ta place.</em>
+      </h1>
+      <p class="text-gray-500 text-base sm:text-lg leading-relaxed mb-10 max-w-lg">
+        Le média digital dédié à la femme africaine et afro-descendante. Des contenus inspirants, éducatifs et engagés pour t'accompagner dans ton développement personnel, professionnel et émotionnel.
+      </p>
+      <div class="flex flex-wrap gap-4 mb-12">
+        <a href="#rubriques" class="btn-primary">
+          <i class="fa-solid fa-compass"></i> Découvrir le magazine
+        </a>
+        <a href="{% url 'chroniques' %}" class="btn-secondary">
+          <i class="fa-solid fa-book-open-reader"></i> Chroniques de Reines
+        </a>
+      </div>
+      <!-- Stats -->
+      <div class="flex items-center gap-6 pt-6 border-t border-gray-100 flex-wrap">
+        <div class="text-center">
+          <div class="font-serif text-2xl font-black text-black">5</div>
+          <div class="text-[10px] uppercase tracking-widest text-gray-400 mt-1">Rubriques</div>
+        </div>
+        <div class="w-px h-8 bg-gray-200"></div>
+        <div class="text-center">
+          <div class="font-serif text-2xl font-black text-black">{{ chroniques.count }}+</div>
+          <div class="text-[10px] uppercase tracking-widest text-gray-400 mt-1">Chroniques</div>
+        </div>
+        <div class="w-px h-8 bg-gray-200"></div>
+        <div class="text-center">
+          <div class="font-serif text-2xl font-black text-black">∞</div>
+          <div class="text-[10px] uppercase tracking-widest text-gray-400 mt-1">Reines</div>
+        </div>
+        <div class="w-px h-8 bg-gray-200"></div>
+        <div class="text-center">
+          <div class="font-serif text-2xl font-black text-black">1</div>
+          <div class="text-[10px] uppercase tracking-widest text-gray-400 mt-1">Communauté</div>
+        </div>
+      </div>
+    </div>
+    <!-- Visuel -->
+    <div class="order-1 lg:order-2 flex justify-center lg:justify-end">
+      <div class="relative w-full max-w-md">
+        <div class="absolute -top-8 -right-8 w-48 h-48 bg-[#FFF0F5] rounded-full -z-10 hidden lg:block"></div>
+        <div class="absolute -bottom-8 -left-8 w-32 h-32 bg-[#FDF5E6] rounded-full -z-10 hidden lg:block"></div>
+        <img src="{% static 'magazine/images/african_queen_hero_1782476460150.png' %}"
+             alt="Reine africaine — Be a Queen Magazine"
+             class="w-full rounded-none object-cover shadow-2xl max-h-[600px]"
+             onerror="this.parentElement.innerHTML='<div class=\'w-full h-96 bg-[#FFF0F5] flex items-center justify-center text-[80px]\'>👑</div>'">
+        <!-- Carte flottante -->
+        <div class="absolute -left-6 bottom-12 bg-white shadow-xl px-5 py-4 border-l-4 border-[#FF1493] hidden lg:block">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 bg-[#FF1493] rounded-full flex items-center justify-center text-white text-sm">
+              <i class="fa-solid fa-fire-flame-curved"></i>
+            </div>
+            <div>
+              <div class="font-bold text-sm text-black">Nouvelle chronique</div>
+              <div class="text-xs text-gray-400">Publiée chaque soir</div>
+            </div>
+          </div>
+        </div>
+        <!-- Badge or -->
+        <div class="absolute -right-4 top-8 w-12 h-12 bg-[#D4AF37] rounded-full flex items-center justify-center text-white shadow-lg hidden lg:flex">
+          <i class="fa-solid fa-crown"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TICKER SCROLLANT ===================== -->
+<div class="bg-[#FF1493] text-white py-3 overflow-hidden whitespace-nowrap">
+  <div class="inline-flex items-center gap-12 animate-[ticker_25s_linear_infinite]" style="animation: ticker-scroll 25s linear infinite; display:inline-flex; gap:3rem;">
+    <span class="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase"><i class="fa-solid fa-heart-pulse"></i> Santé &amp; Bien-être</span>
+    <span class="opacity-40">◆</span>
+    <span class="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase"><i class="fa-solid fa-leaf"></i> Healthy People</span>
+    <span class="opacity-40">◆</span>
+    <span class="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase"><i class="fa-solid fa-briefcase"></i> Entrepreneuriat</span>
+    <span class="opacity-40">◆</span>
+    <span class="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase"><i class="fa-solid fa-crown text-[#D4AF37]"></i> Femmes de Succès</span>
+    <span class="opacity-40">◆</span>
+    <span class="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase"><i class="fa-solid fa-newspaper"></i> Actualités</span>
+    <span class="opacity-40">◆</span>
+    <span class="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase"><i class="fa-solid fa-book-open"></i> Chroniques de Reines</span>
+    <span class="opacity-40">◆</span>
+    <!-- Doublon -->
+    <span class="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase"><i class="fa-solid fa-heart-pulse"></i> Santé &amp; Bien-être</span>
+    <span class="opacity-40">◆</span>
+    <span class="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase"><i class="fa-solid fa-leaf"></i> Healthy People</span>
+    <span class="opacity-40">◆</span>
+    <span class="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase"><i class="fa-solid fa-briefcase"></i> Entrepreneuriat</span>
+    <span class="opacity-40">◆</span>
+    <span class="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase"><i class="fa-solid fa-crown text-[#D4AF37]"></i> Femmes de Succès</span>
+    <span class="opacity-40">◆</span>
+    <span class="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase"><i class="fa-solid fa-newspaper"></i> Actualités</span>
+    <span class="opacity-40">◆</span>
+    <span class="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase"><i class="fa-solid fa-book-open"></i> Chroniques de Reines</span>
+    <span class="opacity-40">◆</span>
+  </div>
+</div>
+<style>
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+</style>
+
+<!-- ===================== RUBRIQUES ===================== -->
+<section class="py-20 lg:py-28 bg-white" id="rubriques">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-14 gap-4">
+      <div>
+        <div class="section-eyebrow"><i class="fa-solid fa-grid-2"></i> Nos Rubriques</div>
+        <h2 class="font-serif text-3xl sm:text-4xl font-black text-black leading-tight">Explore notre <em class="italic text-[#FF1493]">univers</em></h2>
+        <p class="text-gray-500 text-sm mt-3 max-w-lg leading-relaxed">Cinq grands thèmes pour t'accompagner dans chaque dimension de ta vie. Clique sur une rubrique pour explorer son contenu.</p>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 border border-[#FF1493]/20">
+      <!-- Rubrique 1 -->
+      <a href="{% url 'rubrique' 'sante-bien-etre' %}" class="group flex flex-col border-r border-[#FF1493]/20 last:border-r-0 transition-transform hover:-translate-y-1 overflow-hidden no-underline">
+        <div class="aspect-[3/4] overflow-hidden relative">
+          <img src="{% static 'magazine/images/wangari_maathai_portrait_1782476514383.png' %}" alt="Santé & Bien-être" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.style.display='none'">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-3">
+            <span class="inline-flex items-center gap-1.5 text-white text-[10px] font-bold tracking-widest uppercase bg-[#FF1493]/80 px-2 py-1">
+              <i class="fa-solid fa-heart-pulse text-[8px]"></i> Santé &amp; Bien-être
+            </span>
+          </div>
+        </div>
+        <div class="p-5 bg-white flex-1 flex flex-col">
+          <div class="w-8 h-8 bg-[#FFF0F5] rounded-full flex items-center justify-center text-[#FF1493] text-sm mb-3"><i class="fa-solid fa-heart-pulse"></i></div>
+          <h3 class="font-serif text-base font-bold text-black mb-2 leading-tight">Santé &amp; Bien-être</h3>
+          <p class="text-gray-500 text-xs leading-relaxed flex-1">Corps, esprit et équilibre. Des conseils pratiques pour te sentir bien.</p>
+          <span class="mt-3 inline-flex items-center gap-1 text-[#FF1493] text-xs font-bold uppercase tracking-wider">Explorer <i class="fa-solid fa-arrow-right text-[9px]"></i></span>
+        </div>
+      </a>
+      <!-- Rubrique 2 -->
+      <a href="{% url 'rubrique' 'healthy-people' %}" class="group flex flex-col border-r border-[#FF1493]/20 last:border-r-0 transition-transform hover:-translate-y-1 overflow-hidden no-underline">
+        <div class="aspect-[3/4] overflow-hidden relative">
+          <img src="{% static 'magazine/images/miriam_makeba_portrait_1782476530278.png' %}" alt="Healthy People" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.style.display='none'">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-3">
+            <span class="inline-flex items-center gap-1.5 text-white text-[10px] font-bold tracking-widest uppercase bg-[#FF1493]/80 px-2 py-1">
+              <i class="fa-solid fa-leaf text-[8px]"></i> Healthy People
+            </span>
+          </div>
+        </div>
+        <div class="p-5 bg-white flex-1 flex flex-col">
+          <div class="w-8 h-8 bg-[#FFF0F5] rounded-full flex items-center justify-center text-[#FF1493] text-sm mb-3"><i class="fa-solid fa-leaf"></i></div>
+          <h3 class="font-serif text-base font-bold text-black mb-2 leading-tight">Healthy People</h3>
+          <p class="text-gray-500 text-xs leading-relaxed flex-1">Des femmes inspirantes qui adoptent un mode de vie sain.</p>
+          <span class="mt-3 inline-flex items-center gap-1 text-[#FF1493] text-xs font-bold uppercase tracking-wider">Explorer <i class="fa-solid fa-arrow-right text-[9px]"></i></span>
+        </div>
+      </a>
+      <!-- Rubrique 3 -->
+      <a href="{% url 'rubrique' 'entrepreneuriat' %}" class="group flex flex-col border-r border-[#FF1493]/20 last:border-r-0 transition-transform hover:-translate-y-1 overflow-hidden no-underline">
+        <div class="aspect-[3/4] overflow-hidden relative">
+          <img src="{% static 'magazine/images/oprah_winfrey_portrait_1782476495874.png' %}" alt="Entrepreneuriat" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.style.display='none'">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-3">
+            <span class="inline-flex items-center gap-1.5 text-white text-[10px] font-bold tracking-widest uppercase bg-[#FF1493]/80 px-2 py-1">
+              <i class="fa-solid fa-briefcase text-[8px]"></i> Entrepreneuriat
+            </span>
+          </div>
+        </div>
+        <div class="p-5 bg-white flex-1 flex flex-col">
+          <div class="w-8 h-8 bg-[#FFF0F5] rounded-full flex items-center justify-center text-[#FF1493] text-sm mb-3"><i class="fa-solid fa-briefcase"></i></div>
+          <h3 class="font-serif text-base font-bold text-black mb-2 leading-tight">Entrepreneuriat</h3>
+          <p class="text-gray-500 text-xs leading-relaxed flex-1">Stratégies, conseils business et retours d'expérience pour créer ton activité.</p>
+          <span class="mt-3 inline-flex items-center gap-1 text-[#FF1493] text-xs font-bold uppercase tracking-wider">Explorer <i class="fa-solid fa-arrow-right text-[9px]"></i></span>
+        </div>
+      </a>
+      <!-- Rubrique 4 -->
+      <a href="{% url 'rubrique' 'femmes-de-succes' %}" class="group flex flex-col border-r border-[#FF1493]/20 last:border-r-0 transition-transform hover:-translate-y-1 overflow-hidden no-underline">
+        <div class="aspect-[3/4] overflow-hidden relative">
+          <img src="{% static 'magazine/images/michelle_obama_portrait_1782476476636.png' %}" alt="Femmes de Succès" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.style.display='none'">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-3">
+            <span class="inline-flex items-center gap-1.5 text-white text-[10px] font-bold tracking-widest uppercase bg-[#D4AF37]/90 px-2 py-1">
+              <i class="fa-solid fa-crown text-[8px]"></i> Femmes de Succès
+            </span>
+          </div>
+        </div>
+        <div class="p-5 bg-white flex-1 flex flex-col">
+          <div class="w-8 h-8 bg-[#FDF5E6] rounded-full flex items-center justify-center text-[#D4AF37] text-sm mb-3"><i class="fa-solid fa-crown"></i></div>
+          <h3 class="font-serif text-base font-bold text-black mb-2 leading-tight">Femmes de Succès</h3>
+          <p class="text-gray-500 text-xs leading-relaxed flex-1">Les parcours de femmes africaines qui brillent dans leurs domaines.</p>
+          <span class="mt-3 inline-flex items-center gap-1 text-[#FF1493] text-xs font-bold uppercase tracking-wider">Explorer <i class="fa-solid fa-arrow-right text-[9px]"></i></span>
+        </div>
+      </a>
+      <!-- Rubrique 5 -->
+      <a href="{% url 'rubrique' 'actualites' %}" class="group flex flex-col border-r-0 transition-transform hover:-translate-y-1 overflow-hidden no-underline">
+        <div class="aspect-[3/4] overflow-hidden relative">
+          <img src="{% static 'magazine/images/reine_succes_1782479341842.png' %}" alt="Actualités" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.style.display='none'">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-3">
+            <span class="inline-flex items-center gap-1.5 text-white text-[10px] font-bold tracking-widest uppercase bg-[#FF1493]/80 px-2 py-1">
+              <i class="fa-solid fa-newspaper text-[8px]"></i> Actualités
+            </span>
+          </div>
+        </div>
+        <div class="p-5 bg-white flex-1 flex flex-col">
+          <div class="w-8 h-8 bg-[#FFF0F5] rounded-full flex items-center justify-center text-[#FF1493] text-sm mb-3"><i class="fa-solid fa-newspaper"></i></div>
+          <h3 class="font-serif text-base font-bold text-black mb-2 leading-tight">Actualités</h3>
+          <p class="text-gray-500 text-xs leading-relaxed flex-1">Un regard engagé sur l'actualité qui concerne les femmes africaines.</p>
+          <span class="mt-3 inline-flex items-center gap-1 text-[#FF1493] text-xs font-bold uppercase tracking-wider">Explorer <i class="fa-solid fa-arrow-right text-[9px]"></i></span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ARTICLES À LA UNE ===================== -->
+<section class="py-20 lg:py-28 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-14 gap-4">
+      <div>
+        <div class="section-eyebrow"><i class="fa-solid fa-fire-flame-curved"></i> À la une</div>
+        <h2 class="font-serif text-3xl sm:text-4xl font-black text-black leading-tight">Nos <em class="italic text-[#FF1493]">derniers</em> articles</h2>
+        <p class="text-gray-500 text-sm mt-3 max-w-lg leading-relaxed">Des contenus soigneusement sélectionnés pour t'informer, t'inspirer et t'élever au quotidien.</p>
+      </div>
+      <a href="#" class="inline-flex items-center gap-2 text-[#FF1493] text-xs font-bold uppercase tracking-wider border-b-2 border-[#FF1493] pb-0.5 hover:gap-3 transition-all whitespace-nowrap">Tous les articles <i class="fa-solid fa-arrow-right text-[9px]"></i></a>
+    </div>
+    <div class="grid lg:grid-cols-[1.4fr_1fr] gap-10">
+      <!-- Article Principal -->
+      <div class="bg-white border border-gray-100 overflow-hidden group">
+        {% if article_principal %}
+        <div class="aspect-video overflow-hidden relative">
+          {% if article_principal.image_principale %}
+          <img src="{{ article_principal.image_principale.url }}" alt="{{ article_principal.titre }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+          {% else %}
+          <div class="w-full h-full bg-gradient-to-br from-[#FF1493]/20 to-[#FFB6C1]/20 flex items-center justify-center">
+            <img src="{% static 'magazine/images/african_queen_hero_1782476460150.png' %}" alt="Article" class="w-full h-full object-cover" onerror="this.style.display='none'">
+          </div>
+          {% endif %}
+          <div class="absolute top-4 left-4 bg-[#FF1493] text-white text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 flex items-center gap-1.5">
+            <i class="fa-solid fa-star text-[8px]"></i> Article à la Une
+          </div>
+        </div>
+        <div class="p-8">
+          <span class="tag-rubrique"><i class="fa-solid fa-tag text-[9px]"></i> {{ article_principal.rubrique.nom }}</span>
+          <h2 class="font-serif text-2xl sm:text-3xl font-black text-black leading-tight mb-4 mt-2">
+            <a href="{% url 'article' article_principal.slug %}" class="text-black no-underline hover:text-[#FF1493] transition-colors">{{ article_principal.titre }}</a>
+          </h2>
+          <div class="flex items-center gap-4 text-xs text-gray-400 mb-4 flex-wrap">
+            <span class="flex items-center gap-1.5"><i class="fa-regular fa-clock text-[#FF1493]"></i> {{ article_principal.temps_lecture }} min</span>
+            <span class="flex items-center gap-1.5"><i class="fa-regular fa-eye text-[#FF1493]"></i> {{ article_principal.vues }} vues</span>
+            <span class="flex items-center gap-1.5"><i class="fa-regular fa-calendar text-[#FF1493]"></i> {{ article_principal.date_publication|date:"d M Y" }}</span>
+          </div>
+          <p class="text-gray-500 text-sm leading-relaxed mb-6">{{ article_principal.extrait }}</p>
+          <a href="{% url 'article' article_principal.slug %}" class="lire-lien">Lire l'article <i class="fa-solid fa-arrow-right text-[9px]"></i></a>
+        </div>
+        {% else %}
+        <div class="flex items-center justify-center h-64 bg-[#FFF0F5]">
+          <div class="text-center">
+            <i class="fa-solid fa-crown text-5xl text-[#FF1493]/30 mb-4"></i>
+            <p class="text-gray-400 text-sm">Bientôt disponible...</p>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      <!-- Articles Secondaires -->
+      <div class="flex flex-col gap-4">
+        {% for art in articles_secondaires %}
+        <div class="bg-white border border-gray-100 flex gap-4 p-5 hover:shadow-md transition-shadow group overflow-hidden">
+          <div class="w-24 h-24 flex-shrink-0 overflow-hidden bg-[#FFF0F5]">
+            {% if art.image_principale %}
+            <img src="{{ art.image_principale.url }}" alt="{{ art.titre }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+            {% else %}
+            <div class="w-full h-full flex items-center justify-center text-[#FF1493] text-2xl">👑</div>
+            {% endif %}
+          </div>
+          <div class="flex-1 min-w-0">
+            <span class="tag-rubrique">{{ art.rubrique.nom }}</span>
+            <h4 class="font-serif font-bold text-sm text-black leading-tight mb-1">
+              <a href="{% url 'article' art.slug %}" class="text-black no-underline hover:text-[#FF1493] transition-colors">{{ art.titre }}</a>
+            </h4>
+            <p class="text-xs text-gray-400 line-clamp-2 leading-relaxed">{{ art.extrait|truncatewords:10 }}</p>
+          </div>
+        </div>
+        {% empty %}
+        <div class="flex items-center justify-center h-full text-gray-400 italic text-sm">
+          <i class="fa-solid fa-pen-to-square mr-2 text-[#FF1493]"></i> D'autres articles arrivent bientôt...
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CHRONIQUES (DARK) ===================== -->
+<section class="bg-black py-20 lg:py-28 relative overflow-hidden" id="chroniques">
+  <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(circle at 20% 50%, rgba(255,20,147,0.08) 0%, transparent 60%)"></div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <div class="inline-flex items-center gap-2 text-[11px] font-bold tracking-widest uppercase text-[#D4AF37] mb-6">
+          <i class="fa-solid fa-candle-holder"></i> Chaque soir, une bougie allumée
+        </div>
+        <h2 class="font-serif text-4xl sm:text-5xl font-black text-white leading-tight mb-6">
+          Chroniques<br>de <em class="italic text-[#FF69B4]">Reines</em>
+        </h2>
+        <p class="text-white/60 text-base leading-relaxed mb-8">
+          Des histoires vraies, des voix authentiques, des émotions intenses. Des récits secrets, tabous, inattendus — mais toujours humains. Des fragments de vie qui questionnent, touchent et éveillent les consciences.
+        </p>
+        <a href="{% url 'chroniques' %}" class="btn-outline-white">
+          <i class="fa-solid fa-book-open-reader"></i> Lire tous les récits
+        </a>
+      </div>
+      <div class="flex flex-col gap-3">
+        {% for chron in chroniques %}
+        <a href="{% url 'chroniques' %}" class="block bg-white/5 border border-white/10 p-6 hover:bg-white/10 transition-colors no-underline group">
+          <div class="text-[10px] font-bold tracking-widest uppercase text-[#FF69B4] mb-2 flex items-center gap-1.5">
+            <i class="fa-solid fa-quote-left text-[8px]"></i> Chronique {{ forloop.counter }}
+          </div>
+          <h4 class="font-serif font-bold text-white text-base mb-2 leading-tight">{{ chron.titre }}</h4>
+          <p class="text-white/50 text-xs leading-relaxed line-clamp-2">{{ chron.contenu|truncatewords:18 }}</p>
+          <div class="mt-3 flex items-center justify-between">
+            <i class="fa-solid fa-arrow-right text-[#FF1493] text-xs transition-transform group-hover:translate-x-1"></i>
+          </div>
+        </a>
+        {% empty %}
+        <div class="bg-white/5 border border-white/10 p-8 text-center">
+          <div class="text-4xl mb-4">🕯</div>
+          <h4 class="font-serif text-white font-bold text-lg mb-2">Les chroniques arrivent...</h4>
+          <p class="text-white/40 text-sm">Des récits de reines vous attendent très bientôt.</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ICÔNES — FEMMES LÉGENDAIRES ===================== -->
+<section class="py-20 lg:py-28 bg-white border-b border-gray-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+    <div class="text-center mb-14">
+      <div class="section-eyebrow justify-center"><i class="fa-solid fa-crown"></i> Nos Reines Inspirantes</div>
+      <h2 class="font-serif text-3xl sm:text-4xl font-black text-black leading-tight">Ces femmes qui ont <em class="italic text-[#FF1493]">changé le monde</em></h2>
+      <p class="text-gray-500 text-base mt-4 max-w-xl mx-auto leading-relaxed">
+        Des pionnières africaines et afro-descendantes qui ont marqué l'histoire et inspirent chaque jour des millions de femmes.
+      </p>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-5">
+      <!-- Ngozi -->
+      <div class="group">
+        <div class="aspect-[3/4] overflow-hidden relative border border-gray-100">
+          <img src="{% static 'magazine/images/ngozi_okonjo_iweala_portrait_1782992085614.png' %}" alt="Ngozi Okonjo-Iweala" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-4">
+            <p class="font-serif text-white font-bold text-sm mb-0.5">Ngozi Okonjo-Iweala</p>
+            <p class="text-white/60 text-[10px] uppercase tracking-wider">Économie &amp; Leadership</p>
+          </div>
+        </div>
+        <div class="mt-2 bg-[#FDF5E6] px-3 py-1.5 flex items-center justify-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#D4AF37]">
+          <i class="fa-solid fa-crown"></i> OMC
+        </div>
+      </div>
+      <!-- Ellen -->
+      <div class="group">
+        <div class="aspect-[3/4] overflow-hidden relative border border-gray-100">
+          <img src="{% static 'magazine/images/ellen_johnson_sirleaf_portrait_1782992408612.png' %}" alt="Ellen Johnson Sirleaf" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-4">
+            <p class="font-serif text-white font-bold text-sm mb-0.5">Ellen J. Sirleaf</p>
+            <p class="text-white/60 text-[10px] uppercase tracking-wider">Politique &amp; Paix</p>
+          </div>
+        </div>
+        <div class="mt-2 bg-[#FFF0F5] px-3 py-1.5 flex items-center justify-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#FF1493]">
+          <i class="fa-solid fa-star"></i> Prix Nobel
+        </div>
+      </div>
+      <!-- Chimamanda -->
+      <div class="group">
+        <div class="aspect-[3/4] overflow-hidden relative border border-gray-100">
+          <img src="{% static 'magazine/images/chimamanda_ngozi_adichie_portrait_1782992426911.png' %}" alt="Chimamanda Adichie" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-4">
+            <p class="font-serif text-white font-bold text-sm mb-0.5">Chimamanda Adichie</p>
+            <p class="text-white/60 text-[10px] uppercase tracking-wider">Littérature &amp; Féminisme</p>
+          </div>
+        </div>
+        <div class="mt-2 bg-black px-3 py-1.5 flex items-center justify-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#FF69B4]">
+          <i class="fa-solid fa-pen-nib"></i> Auteure
+        </div>
+      </div>
+      <!-- Angélique -->
+      <div class="group">
+        <div class="aspect-[3/4] overflow-hidden relative border border-gray-100">
+          <img src="{% static 'magazine/images/angelique_kidjo_portrait_1782992561955.png' %}" alt="Angélique Kidjo" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-4">
+            <p class="font-serif text-white font-bold text-sm mb-0.5">Angélique Kidjo</p>
+            <p class="text-white/60 text-[10px] uppercase tracking-wider">Musique &amp; Activisme</p>
+          </div>
+        </div>
+        <div class="mt-2 bg-[#FDF5E6] px-3 py-1.5 flex items-center justify-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#D4AF37]">
+          <i class="fa-solid fa-music"></i> Grammy Awards
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-10">
+      <a href="{% url 'rubrique' 'femmes-de-succes' %}" class="btn-primary">
+        <i class="fa-solid fa-crown text-[#D4AF37]"></i> Découvrir toutes nos Reines
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== VALEURS ===================== -->
+<section class="py-20 lg:py-28 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+    <div class="text-center mb-14">
+      <div class="section-eyebrow justify-center"><i class="fa-solid fa-gem"></i> Pourquoi nous suivre</div>
+      <h2 class="font-serif text-3xl sm:text-4xl font-black text-black leading-tight">Quatre raisons de rejoindre<br>notre <em class="italic text-[#FF1493]">communauté</em></h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="bg-white p-8 border-t-4 border-[#FF1493] hover:shadow-xl transition-shadow">
+        <div class="w-12 h-12 bg-[#FFF0F5] rounded-full flex items-center justify-center text-[#FF1493] text-xl mb-5"><i class="fa-solid fa-bolt-lightning"></i></div>
+        <h3 class="font-serif text-lg font-bold text-black mb-3 leading-tight">Pour s'inspirer au quotidien</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Des contenus frais, engagés et adaptés à ta réalité de femme africaine ambitieuse.</p>
+      </div>
+      <div class="bg-white p-8 border-t-4 border-[#D4AF37] hover:shadow-xl transition-shadow">
+        <div class="w-12 h-12 bg-[#FDF5E6] rounded-full flex items-center justify-center text-[#D4AF37] text-xl mb-5"><i class="fa-solid fa-graduation-cap"></i></div>
+        <h3 class="font-serif text-lg font-bold text-black mb-3 leading-tight">Pour apprendre et évoluer</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Des stratégies concrètes, des outils pratiques et des conseils qui changent réellement les choses.</p>
+      </div>
+      <div class="bg-white p-8 border-t-4 border-[#FF1493] hover:shadow-xl transition-shadow">
+        <div class="w-12 h-12 bg-[#FFF0F5] rounded-full flex items-center justify-center text-[#FF1493] text-xl mb-5"><i class="fa-solid fa-earth-africa"></i></div>
+        <h3 class="font-serif text-lg font-bold text-black mb-3 leading-tight">Pour découvrir des parcours puissants</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Des portraits de femmes réelles qui prouvent que le succès est accessible à toutes.</p>
+      </div>
+      <div class="bg-white p-8 border-t-4 border-[#D4AF37] hover:shadow-xl transition-shadow">
+        <div class="w-12 h-12 bg-[#FDF5E6] rounded-full flex items-center justify-center text-[#D4AF37] text-xl mb-5"><i class="fa-solid fa-users-between-lines"></i></div>
+        <h3 class="font-serif text-lg font-bold text-black mb-3 leading-tight">Pour rejoindre une communauté</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Des femmes ambitieuses, bienveillantes et déterminées à bâtir leur vie selon leurs règles.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

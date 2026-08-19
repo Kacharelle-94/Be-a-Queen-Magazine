@@ -1,0 +1,31 @@
+{% extends 'magazine/base.html' %}
+{% load static %}
+
+{% block title %}Détails du Produit — Be a Queen Magazine{% endblock title %}
+
+{% block content %}
+<section class="py-20 lg:py-28 bg-white min-h-[70vh] flex flex-col items-center justify-center">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 w-full">
+    
+    <div class="text-center mb-12">
+      <div class="section-eyebrow justify-center"><i class="fa-solid fa-bag-shopping"></i> Nos Produits & Services</div>
+      <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-black text-black leading-tight mb-4">{{ titre }}</h1>
+      <div class="inline-flex items-center gap-2 bg-[#FDF5E6] text-[#D4AF37] px-4 py-2 text-[10px] font-bold tracking-widest uppercase">
+        <i class="fa-solid fa-star"></i> Bientôt Disponible
+      </div>
+    </div>
+    
+    <div class="bg-gray-50 border border-gray-100 p-10 sm:p-14 text-center">
+      <i class="fa-solid fa-crown text-6xl text-[#FF1493] mb-6"></i>
+      <h2 class="font-serif text-2xl font-bold text-black mb-4">Contenu en préparation</h2>
+      <p class="text-gray-500 leading-relaxed mb-8 max-w-lg mx-auto">
+        La fondatrice prépare du contenu exclusif pour vous. Les articles et produits seront bientôt disponibles à la vente sur cette page. Restez connectées !
+      </p>
+      <a href="{% url 'produits' %}" class="btn-secondary">
+        <i class="fa-solid fa-arrow-left"></i> Retour aux produits
+      </a>
+    </div>
+
+  </div>
+</section>
+{% endblock content %}

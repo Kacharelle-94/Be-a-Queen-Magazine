@@ -1,0 +1,324 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Be a Queen Magazine — Le média digital qui célèbre, inspire et élève la femme africaine et afro-descendante.">
+<title>{% block title %}Be a Queen Magazine — Le média qui élève la femme africaine{% endblock title %}</title>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<!-- Tailwind CSS v4 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+<style type="text/tailwindcss">
+  @theme {
+    --color-rose: #FF1493;
+    --color-rose-pale: #FFF0F5;
+    --color-rose-light: #FFB6C1;
+    --color-rose-mid: #FF69B4;
+    --color-or: #D4AF37;
+    --color-or-pale: #FDF5E6;
+    --font-serif: 'Playfair Display', serif;
+    --font-sans: 'DM Sans', sans-serif;
+  }
+  body { font-family: var(--font-sans); }
+  h1,h2,h3,h4 { font-family: var(--font-sans); }
+  .font-serif { font-family: var(--font-serif) !important; }
+  .tag-rubrique {
+    @apply inline-block text-[10px] font-bold tracking-widest uppercase text-[#FF1493] mb-2;
+  }
+  .section-eyebrow {
+    @apply inline-flex items-center gap-2 text-[11px] font-bold tracking-widest uppercase text-[#FF1493] mb-4;
+  }
+  .section-eyebrow::before {
+    content: '';
+    @apply w-7 h-0.5 bg-[#FF1493];
+  }
+  .btn-primary {
+    @apply inline-flex items-center gap-2 bg-[#FF1493] text-white font-bold text-xs tracking-widest uppercase px-7 py-3 border-2 border-[#FF1493] transition-all duration-200 hover:bg-[#C71585] hover:border-[#C71585] hover:-translate-y-px cursor-pointer;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 bg-transparent text-black font-bold text-xs tracking-widest uppercase px-7 py-3 border-2 border-black transition-all duration-200 hover:bg-black hover:text-white cursor-pointer;
+  }
+  .btn-outline-white {
+    @apply inline-flex items-center gap-2 bg-transparent text-white font-bold text-xs tracking-widest uppercase px-7 py-3 border-2 border-white/50 transition-all duration-200 hover:bg-white hover:text-black cursor-pointer;
+  }
+  .lire-lien {
+    @apply inline-flex items-center gap-2 text-[#FF1493] font-bold text-xs tracking-wider uppercase border-b-2 border-[#FF1493] pb-0.5 transition-all duration-200 hover:gap-3;
+  }
+</style>
+
+</head>
+<body class="bg-white text-black min-h-screen flex flex-col antialiased">
+
+<!-- BANDEAU ANNONCE -->
+<div class="bg-[#FF1493] text-white text-center py-2.5 px-5 text-xs font-medium tracking-wider uppercase leading-relaxed">
+  <div><i class="fa-solid fa-crown text-[#D4AF37] mr-2"></i> Bienvenue sur Be a Queen Magazine</div>
+  <div class="mt-1 opacity-90 text-[10px] sm:text-xs">Le média qui élève la femme africaine et afro-descendante</div>
+</div>
+
+<!-- HEADER -->
+<header class="sticky top-0 z-[200] bg-white border-b border-[#FF1493]/20 backdrop-blur-md">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 flex items-center justify-between h-20">
+
+    <!-- LOGO -->
+    <a href="/" class="flex items-center gap-3 font-serif font-black text-xl text-black no-underline">
+      <div class="w-16 h-16 flex items-center justify-center flex-shrink-0">
+        <img src="{% static 'magazine/images/logo.jpg' %}" alt="BeaQueen Logo" class="w-full h-full object-contain rounded">
+      </div>
+      <span class="hidden sm:block">Be a Queen</span>
+    </a>
+
+    <!-- NAV DESKTOP -->
+    <nav class="hidden lg:flex items-center gap-8">
+      <a href="/#rubriques" class="text-[13px] font-medium tracking-widest uppercase text-gray-600 transition-colors hover:text-[#FF1493] relative group">
+        <i class="fa-solid fa-grid-2 text-[10px] mr-1"></i> Rubriques
+        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FF1493] transition-all group-hover:w-full"></span>
+      </a>
+      <a href="{% url 'chroniques' %}" class="text-[13px] font-medium tracking-widest uppercase text-gray-600 transition-colors hover:text-[#FF1493] relative group">
+        <i class="fa-solid fa-book-open-reader text-[10px] mr-1"></i> Chroniques
+        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FF1493] transition-all group-hover:w-full"></span>
+      </a>
+      <a href="{% url 'produits' %}" class="text-[13px] font-medium tracking-widest uppercase text-gray-600 transition-colors hover:text-[#FF1493] relative group">
+        <i class="fa-solid fa-bag-shopping text-[10px] mr-1"></i> Boutique
+        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FF1493] transition-all group-hover:w-full"></span>
+      </a>
+      <a href="{% url 'a_propos' %}" class="text-[13px] font-medium tracking-widest uppercase text-gray-600 transition-colors hover:text-[#FF1493] relative group">
+        <i class="fa-solid fa-circle-info text-[10px] mr-1"></i> À propos
+        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FF1493] transition-all group-hover:w-full"></span>
+      </a>
+      <a href="{% url 'contact' %}" class="text-[13px] font-medium tracking-widest uppercase text-gray-600 transition-colors hover:text-[#FF1493] relative group">
+        <i class="fa-solid fa-envelope text-[10px] mr-1"></i> Contact
+        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FF1493] transition-all group-hover:w-full"></span>
+      </a>
+    </nav>
+
+    <!-- DROITE HEADER -->
+    <div class="flex items-center gap-3">
+      <a href="/#newsletter" class="btn-primary hidden sm:inline-flex text-[11px] px-5 py-2.5">
+        <i class="fa-solid fa-paper-plane"></i> Newsletter
+      </a>
+      <!-- Hamburger -->
+      <button id="hamburgerBtn" class="lg:hidden flex flex-col gap-1.5 p-2 cursor-pointer bg-transparent border-0" aria-label="Menu">
+        <span class="block w-6 h-0.5 bg-black transition-all"></span>
+        <span class="block w-6 h-0.5 bg-black transition-all"></span>
+        <span class="block w-6 h-0.5 bg-black transition-all"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- MENU MOBILE -->
+<div id="mobileNav" class="hidden fixed inset-0 bg-white z-[5000] flex-col items-center justify-center gap-10">
+  <button id="mobileNavClose" class="absolute top-6 right-6 text-3xl text-black bg-transparent border-0 cursor-pointer">&times;</button>
+  <a href="/" class="font-serif text-2xl font-bold text-black hover:text-[#FF1493] no-underline flex items-center gap-3">
+    <i class="fa-solid fa-house text-[#FF1493] text-sm"></i> Accueil
+  </a>
+  <a href="/#rubriques" class="font-serif text-2xl font-bold text-black hover:text-[#FF1493] no-underline flex items-center gap-3">
+    <i class="fa-solid fa-grid-2 text-[#FF1493] text-sm"></i> Rubriques
+  </a>
+  <a href="{% url 'chroniques' %}" class="font-serif text-2xl font-bold text-black hover:text-[#FF1493] no-underline flex items-center gap-3">
+    <i class="fa-solid fa-book-open-reader text-[#FF1493] text-sm"></i> Chroniques
+  </a>
+  <a href="{% url 'produits' %}" class="font-serif text-2xl font-bold text-black hover:text-[#FF1493] no-underline flex items-center gap-3">
+    <i class="fa-solid fa-bag-shopping text-[#FF1493] text-sm"></i> Boutique
+  </a>
+  <a href="{% url 'a_propos' %}" class="font-serif text-2xl font-bold text-black hover:text-[#FF1493] no-underline flex items-center gap-3">
+    <i class="fa-solid fa-circle-info text-[#FF1493] text-sm"></i> À propos
+  </a>
+  <a href="{% url 'contact' %}" class="font-serif text-2xl font-bold text-black hover:text-[#FF1493] no-underline flex items-center gap-3">
+    <i class="fa-solid fa-envelope text-[#FF1493] text-sm"></i> Contact
+  </a>
+  <a href="/#newsletter" class="btn-primary text-sm">
+    <i class="fa-solid fa-paper-plane"></i> Newsletter
+  </a>
+</div>
+
+<main class="flex-1">
+  {% block content %}
+  {% endblock content %}
+</main>
+
+<!-- NEWSLETTER -->
+{% block newsletter_block %}
+<section id="newsletter" class="py-20 bg-black text-white relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 20% 50%, #FF1493 0%, transparent 50%), radial-gradient(circle at 80% 50%, #D4AF37 0%, transparent 50%);"></div>
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 text-center relative z-10">
+    <div class="inline-flex items-center gap-2 text-[11px] font-bold tracking-widest uppercase text-[#FF1493] mb-5">
+      <i class="fa-solid fa-envelope-open-text"></i> La communauté des Reines
+    </div>
+    <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-black leading-tight mb-4 text-white">
+      Rejoins les reines.<br><em class="italic text-[#FF1493]">Chaque semaine dans ta boîte mail.</em>
+    </h2>
+    <p class="text-white/60 text-base mb-8 leading-relaxed">
+      Contenus exclusifs, conseils de la fondatrice, Chroniques en avant-première — directement chez toi.
+    </p>
+    <form class="flex flex-col sm:flex-row gap-0 max-w-lg mx-auto" method="POST" action="{% url 'newsletter' %}">
+      {% csrf_token %}
+      <input type="hidden" name="source" value="footer">
+      <input type="email" name="email" placeholder="Ton adresse email..." required
+             class="flex-1 px-5 py-4 bg-white/10 border border-white/20 text-white placeholder-white/40 text-sm outline-none focus:bg-white/15 focus:border-[#FF1493]">
+      <button type="submit" class="bg-[#FF1493] hover:bg-[#C71585] text-white font-bold px-8 py-4 text-xs tracking-widest uppercase transition-colors whitespace-nowrap border-0 cursor-pointer flex items-center gap-2 justify-center">
+        <i class="fa-solid fa-crown text-[#D4AF37]"></i> Je m'inscris
+      </button>
+    </form>
+    <p class="text-white/30 text-xs mt-4 flex items-center justify-center gap-2">
+      <i class="fa-solid fa-shield-halved"></i>
+      Pas de spam. Désabonnement en 1 clic. Tes données restent privées.
+    </p>
+  </div>
+</section>
+{% endblock newsletter_block %}
+
+<!-- FOOTER -->
+<footer class="bg-black text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+    <!-- Marque -->
+    <div>
+      <a href="/" class="flex items-center gap-3 font-serif font-black text-lg text-white no-underline mb-4">
+        <div class="w-10 h-10 rounded bg-[#FF1493] flex items-center justify-center text-white">
+          <i class="fa-solid fa-crown text-[#D4AF37]"></i>
+        </div>
+        Be a Queen Magazine
+      </a>
+      <p class="text-white/50 text-sm leading-relaxed mb-6">
+        Le média digital qui célèbre, inspire et élève la femme africaine et afro-descendante. Parce que chaque femme est une reine qui s'ignore.
+      </p>
+      <div class="flex gap-3">
+        <a href="https://www.instagram.com/beaqueenmagazine?igsh=ZmxxZGs4ZnJhbXFr" target="_blank" rel="noopener" title="Instagram" class="w-9 h-9 flex items-center justify-center border border-white/20 text-white/50 hover:bg-[#FF1493] hover:border-[#FF1493] hover:text-white transition-all -translate-y-0 hover:-translate-y-0.5"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.facebook.com/share/1EDBtWdAC4/" target="_blank" rel="noopener" title="Facebook" class="w-9 h-9 flex items-center justify-center border border-white/20 text-white/50 hover:bg-[#FF1493] hover:border-[#FF1493] hover:text-white transition-all hover:-translate-y-0.5"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://www.tiktok.com/@beaqueen_magazine?_r=1&_t=ZS-97X9rsmM4yg" target="_blank" rel="noopener" title="TikTok" class="w-9 h-9 flex items-center justify-center border border-white/20 text-white/50 hover:bg-[#FF1493] hover:border-[#FF1493] hover:text-white transition-all hover:-translate-y-0.5"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="https://youtube.com/@beaqueenmagazine?si=HsrxbouOgNLIIUDz" target="_blank" rel="noopener" title="YouTube" class="w-9 h-9 flex items-center justify-center border border-white/20 text-white/50 hover:bg-[#FF1493] hover:border-[#FF1493] hover:text-white transition-all hover:-translate-y-0.5"><i class="fa-brands fa-youtube"></i></a>
+        <a href="https://wa.me/237695103874" target="_blank" rel="noopener" title="WhatsApp" class="w-9 h-9 flex items-center justify-center bg-[#D4AF37] border-[#D4AF37] border text-white hover:-translate-y-0.5 transition-all"><i class="fa-brands fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <!-- Rubriques -->
+    <div>
+      <h4 class="text-[11px] font-bold tracking-widest uppercase text-white mb-5">Rubriques</h4>
+      <ul class="space-y-3">
+        <li><a href="{% url 'rubrique' 'sante-bien-etre' %}" class="text-white/50 text-[13px] hover:text-[#FF69B4] transition-colors flex items-center gap-2 no-underline"><i class="fa-solid fa-heart-pulse text-[#FF69B4] text-[11px] w-4"></i> Santé &amp; Bien-être</a></li>
+        <li><a href="{% url 'rubrique' 'healthy-people' %}" class="text-white/50 text-[13px] hover:text-[#FF69B4] transition-colors flex items-center gap-2 no-underline"><i class="fa-solid fa-leaf text-[#FF69B4] text-[11px] w-4"></i> Healthy People</a></li>
+        <li><a href="{% url 'rubrique' 'entrepreneuriat' %}" class="text-white/50 text-[13px] hover:text-[#FF69B4] transition-colors flex items-center gap-2 no-underline"><i class="fa-solid fa-briefcase text-[#FF69B4] text-[11px] w-4"></i> Entrepreneuriat</a></li>
+        <li><a href="{% url 'rubrique' 'femmes-de-succes' %}" class="text-white/50 text-[13px] hover:text-[#FF69B4] transition-colors flex items-center gap-2 no-underline"><i class="fa-solid fa-crown text-[#FF69B4] text-[11px] w-4"></i> Femmes de Succès</a></li>
+        <li><a href="{% url 'rubrique' 'actualites' %}" class="text-white/50 text-[13px] hover:text-[#FF69B4] transition-colors flex items-center gap-2 no-underline"><i class="fa-solid fa-newspaper text-[#FF69B4] text-[11px] w-4"></i> Actualités</a></li>
+      </ul>
+    </div>
+    <!-- Magazine -->
+    <div>
+      <h4 class="text-[11px] font-bold tracking-widest uppercase text-white mb-5">Magazine</h4>
+      <ul class="space-y-3">
+        <li><a href="{% url 'chroniques' %}" class="text-white/50 text-[13px] hover:text-[#FF69B4] transition-colors flex items-center gap-2 no-underline"><i class="fa-solid fa-book-open text-[#FF69B4] text-[11px] w-4"></i> Chroniques de Reines</a></li>
+        <li><a href="{% url 'produits' %}" class="text-white/50 text-[13px] hover:text-[#FF69B4] transition-colors flex items-center gap-2 no-underline"><i class="fa-solid fa-bag-shopping text-[#FF69B4] text-[11px] w-4"></i> Boutique</a></li>
+        <li><a href="{% url 'a_propos' %}" class="text-white/50 text-[13px] hover:text-[#FF69B4] transition-colors flex items-center gap-2 no-underline"><i class="fa-solid fa-circle-info text-[#FF69B4] text-[11px] w-4"></i> À propos</a></li>
+        <li><a href="/#newsletter" class="text-white/50 text-[13px] hover:text-[#FF69B4] transition-colors flex items-center gap-2 no-underline"><i class="fa-solid fa-envelope text-[#FF69B4] text-[11px] w-4"></i> Newsletter</a></li>
+        <li><a href="{% url 'contact' %}" class="text-white/50 text-[13px] hover:text-[#FF69B4] transition-colors flex items-center gap-2 no-underline"><i class="fa-solid fa-comment-dots text-[#FF69B4] text-[11px] w-4"></i> Contact</a></li>
+      </ul>
+    </div>
+    <!-- Nous rejoindre -->
+    <div>
+      <h4 class="text-[11px] font-bold tracking-widest uppercase text-white mb-5">Nous rejoindre</h4>
+      <ul class="space-y-3">
+        <li><a href="https://wa.me/237695103874" target="_blank" rel="noopener" class="text-white/50 text-[13px] hover:text-[#FF69B4] transition-colors flex items-center gap-2 no-underline"><i class="fa-brands fa-whatsapp text-[#D4AF37] text-[11px] w-4"></i> Écrire sur WhatsApp</a></li>
+        <li><a href="https://whatsapp.com/channel/0029VaktwWP0bIdeB653vV2r" target="_blank" rel="noopener" class="text-white/50 text-[13px] hover:text-[#FF69B4] transition-colors flex items-center gap-2 no-underline"><i class="fa-brands fa-whatsapp text-[#D4AF37] text-[11px] w-4"></i> Chaîne WhatsApp</a></li>
+        <li><a href="https://www.instagram.com/beaqueenmagazine" target="_blank" rel="noopener" class="text-white/50 text-[13px] hover:text-[#FF69B4] transition-colors flex items-center gap-2 no-underline"><i class="fa-brands fa-instagram text-[#FF1493] text-[11px] w-4"></i> Instagram</a></li>
+        <li><a href="https://www.facebook.com/share/1EDBtWdAC4/" target="_blank" rel="noopener" class="text-white/50 text-[13px] hover:text-[#FF69B4] transition-colors flex items-center gap-2 no-underline"><i class="fa-brands fa-facebook-f text-[#D4AF37] text-[11px] w-4"></i> Facebook</a></li>
+        <li><a href="https://www.tiktok.com/@beaqueen_magazine" target="_blank" rel="noopener" class="text-white/50 text-[13px] hover:text-[#FF69B4] transition-colors flex items-center gap-2 no-underline"><i class="fa-brands fa-tiktok text-[#FF1493] text-[11px] w-4"></i> TikTok</a></li>
+        <li><a href="https://youtube.com/@beaqueenmagazine" target="_blank" rel="noopener" class="text-white/50 text-[13px] hover:text-[#FF69B4] transition-colors flex items-center gap-2 no-underline"><i class="fa-brands fa-youtube text-[#D4AF37] text-[11px] w-4"></i> YouTube</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-white/10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-white/30">
+    <span>© 2026 Be a Queen Magazine — Fondé par <strong class="text-white/50">Sandra Pamela Makoulo</strong></span>
+    <span>Fait avec <i class="fa-solid fa-heart text-[#FF69B4]"></i> pour toutes les Reines</span>
+  </div>
+</footer>
+
+<!-- WHATSAPP FLOATING BUTTON -->
+<button onclick="document.getElementById('waModal').classList.remove('hidden'); document.getElementById('waModal').classList.add('flex')"
+        class="fixed bottom-7 right-7 w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center text-white text-2xl shadow-xl z-[9999] border-0 cursor-pointer hover:scale-110 transition-transform"
+        title="Nous contacter sur WhatsApp">
+  <i class="fa-brands fa-whatsapp"></i>
+</button>
+
+<!-- WHATSAPP MODAL -->
+<div id="waModal" class="hidden fixed inset-0 bg-black/60 z-[10000] items-center justify-center p-4"
+     onclick="if(event.target===this){this.classList.add('hidden');this.classList.remove('flex')}">
+  <div class="bg-white w-full max-w-md relative border-t-[5px] border-[#25D366] animate-[waIn_0.3s_ease]">
+    <button onclick="document.getElementById('waModal').classList.add('hidden'); document.getElementById('waModal').classList.remove('flex')"
+            class="absolute top-3 right-4 text-2xl text-gray-400 bg-transparent border-0 cursor-pointer leading-none">&times;</button>
+    <div class="p-8 sm:p-10">
+      <div class="flex items-center gap-3 mb-4">
+        <i class="fa-brands fa-whatsapp text-4xl text-[#25D366]"></i>
+        <h3 class="font-serif text-2xl font-bold text-black m-0">Écrivez-nous</h3>
+      </div>
+      <p class="text-sm text-gray-500 mb-6 leading-relaxed">Remplissez ce formulaire et vous serez redirigée directement vers WhatsApp avec votre message pré-rempli. Sandra vous répondra personnellement.</p>
+      <div class="mb-4">
+        <label class="block text-[11px] font-bold tracking-widest uppercase mb-2 text-black">Votre prénom *</label>
+        <input type="text" id="wa-nom" placeholder="Ex: Aminata" class="w-full border-[1.5px] border-gray-200 px-4 py-3 text-sm outline-none focus:border-[#25D366] text-black">
+      </div>
+      <div class="mb-4">
+        <label class="block text-[11px] font-bold tracking-widest uppercase mb-2 text-black">Sujet *</label>
+        <select id="wa-sujet" class="w-full border-[1.5px] border-gray-200 px-4 py-3 text-sm outline-none focus:border-[#25D366] text-black bg-white">
+          <option>Demande d'information</option>
+          <option>Soumettre une chronique</option>
+          <option>Partenariat / Collaboration</option>
+          <option>Boutique / Produit</option>
+          <option>Autre</option>
+        </select>
+      </div>
+      <div class="mb-6">
+        <label class="block text-[11px] font-bold tracking-widest uppercase mb-2 text-black">Votre message *</label>
+        <textarea id="wa-msg" placeholder="Décrivez votre demande..." class="w-full border-[1.5px] border-gray-200 px-4 py-3 text-sm outline-none focus:border-[#25D366] text-black min-h-[100px] resize-y"></textarea>
+      </div>
+      <button onclick="envoyerWhatsApp()" class="w-full flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#1da855] text-white font-bold text-sm py-4 border-0 cursor-pointer transition-colors">
+        <i class="fa-brands fa-whatsapp text-xl"></i> Envoyer sur WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Hamburger Mobile Menu
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+const mobileNav    = document.getElementById('mobileNav');
+const mobileClose  = document.getElementById('mobileNavClose');
+
+hamburgerBtn.addEventListener('click', () => {
+  mobileNav.classList.remove('hidden');
+  mobileNav.classList.add('flex');
+});
+mobileClose.addEventListener('click', () => {
+  mobileNav.classList.add('hidden');
+  mobileNav.classList.remove('flex');
+});
+// Close mobile nav on link click
+mobileNav.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    mobileNav.classList.add('hidden');
+    mobileNav.classList.remove('flex');
+  });
+});
+
+// WhatsApp
+function envoyerWhatsApp() {
+  const nom   = document.getElementById('wa-nom').value.trim();
+  const sujet = document.getElementById('wa-sujet').value;
+  const msg   = document.getElementById('wa-msg').value.trim();
+  if (!nom || !msg) { alert('Merci de remplir votre prénom et votre message.'); return; }
+  const texte = `Bonjour Sandra ! Je suis ${nom}.%0A%0ASujet : ${sujet}%0A%0A${encodeURIComponent(msg)}`;
+  window.open(`https://wa.me/237695103874?text=${texte}`, '_blank');
+  document.getElementById('waModal').classList.add('hidden');
+  document.getElementById('waModal').classList.remove('flex');
+}
+</script>
+
+</body>
+</html>

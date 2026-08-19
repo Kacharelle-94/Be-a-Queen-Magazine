@@ -1,0 +1,206 @@
+{% extends 'magazine/base.html' %}
+{% load static %}
+
+{% block title %}Chroniques de Reines — Be a Queen Magazine | Histoires vraies{% endblock title %}
+
+{% block content %}
+<!-- ===================== HERO CHRONIQUES (DARK) ===================== -->
+<section class="bg-black text-white py-24 relative overflow-hidden">
+  <div class="absolute inset-0 bg-[url('{% static 'magazine/images/dark_marble_bg_1782485085479.png' %}')] bg-cover bg-center opacity-30"></div>
+  <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[600px] pointer-events-none" style="background: radial-gradient(circle, rgba(139,26,66,0.15) 0%, transparent 70%);"></div>
+  <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#D4AF37]/40 to-transparent"></div>
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 relative z-10 text-center">
+    <div class="text-5xl mb-6 inline-block animate-[flicker_2.5s_ease-in-out_infinite]">🕯</div>
+    
+    <div class="inline-flex items-center justify-center gap-2 bg-[#D4AF37]/10 border border-[#D4AF37]/30 px-5 py-2 text-[11px] font-bold tracking-widest uppercase text-[#D4AF37] mb-8">
+      <i class="fa-solid fa-candle-holder"></i> Chaque soir, une bougie allumée
+    </div>
+
+    <h1 class="font-serif text-4xl sm:text-5xl lg:text-7xl font-black leading-tight tracking-tight text-white mb-8">
+      Chroniques de <em class="italic text-[#FF69B4]">Reines</em>
+    </h1>
+
+    <p class="text-white/70 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto mb-10">
+      Des histoires vraies, des voix authentiques, des émotions intenses.<br>
+      Des récits secrets, tabous, inattendus mais toujours <strong class="text-white/90">humains</strong>. Des fragments de vie qui questionnent, touchent et éveillent les consciences.
+    </p>
+
+    <div class="flex gap-4 justify-center flex-wrap">
+      <a href="https://wa.me/237695103874" target="_blank" rel="noopener" class="btn-primary">
+        <i class="fa-brands fa-whatsapp text-lg"></i> Soumettre ma chronique
+      </a>
+      <a href="/#newsletter" class="btn-outline-white">
+        <i class="fa-solid fa-envelope text-lg"></i> Recevoir les chroniques
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== EXPLICATION ===================== -->
+<div class="bg-[#0e0c0c]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+    <div class="border-b border-white/5 py-10 grid sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/5 text-left">
+      <div class="px-6 py-6 sm:py-0 flex items-start gap-4">
+        <i class="fa-solid fa-lock-open text-[#FF69B4] text-xl mt-1"></i>
+        <div>
+          <div class="font-bold text-sm text-white mb-1">Anonymat respecté</div>
+          <div class="text-xs text-white/50 leading-relaxed">Tu choisis de signer ou de rester anonyme. Ton identité est toujours protégée.</div>
+        </div>
+      </div>
+      <div class="px-6 py-6 sm:py-0 flex items-start gap-4">
+        <i class="fa-solid fa-heart text-[#FF69B4] text-xl mt-1"></i>
+        <div>
+          <div class="font-bold text-sm text-white mb-1">Histoires vraies</div>
+          <div class="text-xs text-white/50 leading-relaxed">Chaque récit est authentique. Pas de fioritures, juste la vérité nue et courageuse.</div>
+        </div>
+      </div>
+      <div class="px-6 py-6 sm:py-0 flex items-start gap-4">
+        <i class="fa-solid fa-users text-[#FF69B4] text-xl mt-1"></i>
+        <div>
+          <div class="font-bold text-sm text-white mb-1">Pour toutes les Reines</div>
+          <div class="text-xs text-white/50 leading-relaxed">Écrit par des femmes, pour des femmes. Un espace de sororité et de bienveillance totale.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== LISTE DES CHRONIQUES ===================== -->
+<section class="bg-black py-16 lg:py-24 relative">
+  <div class="absolute inset-0 bg-[url('{% static 'magazine/images/dark_marble_bg_1782485085479.png' %}')] bg-cover bg-center opacity-30"></div>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
+
+    {% if chroniques %}
+    <div class="flex flex-col gap-8">
+      {% for chron in chroniques %}
+      <article class="border border-white/10 bg-white/5 transition-colors hover:bg-white/10 relative overflow-hidden group">
+        <div class="absolute top-0 left-0 bottom-0 w-1 bg-gradient-to-b from-[#FF1493] to-[#FF69B4]"></div>
+        
+        <div class="p-8 sm:p-12 pl-10 sm:pl-14">
+          <!-- Header chronique -->
+          <div class="flex items-center justify-between flex-wrap gap-4 mb-8">
+            <div class="flex items-center gap-3">
+              <div class="bg-[#8B1A42]/20 border border-[#C0385E]/30 px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase text-[#FF69B4] flex items-center gap-2">
+                <i class="fa-solid fa-quote-left text-[8px]"></i> Chronique #{{ forloop.counter }}
+              </div>
+              {% if chron.anonyme %}
+              <div class="bg-white/5 border border-white/10 px-3 py-1.5 text-[10px] font-bold tracking-widest uppercase text-white/40 flex items-center gap-2">
+                <i class="fa-solid fa-user-secret text-[8px]"></i> Anonyme
+              </div>
+              {% endif %}
+            </div>
+            <div class="text-xs text-white/40 flex items-center gap-3">
+              <span class="flex items-center gap-1.5"><i class="fa-regular fa-calendar"></i> {{ chron.date_publication|date:"d F Y" }}</span>
+              {% if chron.vues > 0 %}
+              <span class="opacity-30">·</span>
+              <span class="flex items-center gap-1.5"><i class="fa-regular fa-eye"></i> {{ chron.vues }} vues</span>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Titre -->
+          <h2 class="font-serif text-2xl sm:text-4xl font-bold text-white mb-8 leading-tight tracking-tight">
+            {{ chron.titre }}
+          </h2>
+
+          <!-- Image -->
+          {% if chron.image %}
+          <div class="aspect-[21/9] overflow-hidden mb-8 border border-white/10">
+            <img src="{{ chron.image.url }}" alt="{{ chron.titre }}" class="w-full h-full object-cover opacity-85 transition-transform duration-700 group-hover:scale-105 group-hover:opacity-100">
+          </div>
+          {% endif %}
+
+          <!-- Contenu -->
+          <div class="text-base sm:text-lg leading-relaxed text-white/70 prose prose-invert max-w-none font-sans">
+            {{ chron.contenu|linebreaks }}
+          </div>
+
+          <!-- Footer chronique -->
+          <div class="mt-10 pt-6 border-t border-white/10 flex items-center justify-between flex-wrap gap-4">
+            <div class="flex items-center gap-3 text-sm text-[#FF69B4]">
+              <div class="w-8 h-8 bg-[#C0385E]/20 rounded-full flex items-center justify-center text-sm">
+                <i class="fa-solid fa-crown"></i>
+              </div>
+              {% if chron.anonyme %}
+              <span>Récit partagé de manière anonyme</span>
+              {% else %}
+              <span>Écrit par <strong class="text-white/70">{{ chron.auteure.nom|default:"Be a Queen" }}</strong></span>
+              {% endif %}
+            </div>
+            <a href="https://wa.me/237695103874" target="_blank" rel="noopener"
+               class="inline-flex items-center gap-2.5 text-sm font-bold tracking-widest uppercase text-[#25D366] border-2 border-[#25D366]/40 px-5 py-3 transition-colors bg-[#25D366]/10 hover:bg-[#25D366]/20">
+              <i class="fa-brands fa-whatsapp text-2xl"></i> Partager ma chronique
+            </a>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <!-- État vide -->
+    <div class="text-center py-24 px-6 border border-white/10 bg-white/5 backdrop-blur-sm">
+      <div class="text-6xl mb-6 animate-[flicker_2.5s_ease-in-out_infinite]">🕯</div>
+      <h2 class="font-serif text-3xl font-bold text-white mb-4">Les chroniques arrivent bientôt...</h2>
+      <p class="text-base text-white/50 max-w-lg mx-auto mb-8 leading-relaxed">
+        Notre équipe prépare des récits puissants et authentiques pour toi. En attendant, abonne-toi à la newsletter pour être la première informée.
+      </p>
+      <div class="flex gap-4 justify-center flex-wrap">
+        <a href="/#newsletter" class="btn-primary">
+          <i class="fa-solid fa-bell"></i> Me prévenir
+        </a>
+        <a href="https://wa.me/237695103874" target="_blank" rel="noopener" class="btn-outline-white">
+          <i class="fa-brands fa-whatsapp"></i> Soumettre une histoire
+        </a>
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+
+<!-- ===================== CTA SOUMETS TA CHRONIQUE ===================== -->
+<section class="bg-gradient-to-br from-[#0a0808] to-[#1a0a10] py-20 border-t border-white/10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <div>
+        <div class="text-4xl mb-6">🪶</div>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-white mb-6 leading-tight">
+          Tu as une histoire à<br><em class="italic text-[#FF69B4]">raconter ?</em>
+        </h2>
+        <p class="text-base text-white/60 leading-relaxed max-w-md">
+          Toutes les histoires méritent d'être entendues. Que tu sois prête à signer ou à rester dans l'ombre — ta voix compte. Envoie-nous ta chronique par WhatsApp.
+        </p>
+      </div>
+      <div class="flex flex-col gap-4">
+        <a href="https://wa.me/237695103874" target="_blank" rel="noopener"
+           class="flex items-center gap-5 bg-[#25D366] hover:bg-[#1da855] text-white p-6 transition-colors">
+          <i class="fa-brands fa-whatsapp text-3xl"></i>
+          <div class="flex-1">
+            <div class="font-bold text-base mb-1 tracking-wide">Envoyer ma chronique par WhatsApp</div>
+            <div class="text-xs text-white/80">+237 695 103 874 — Sandra te répond personnellement</div>
+          </div>
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <a href="{% url 'contact' %}"
+           class="flex items-center gap-5 border border-white/20 hover:bg-white/5 text-white/70 p-6 transition-colors">
+          <i class="fa-solid fa-envelope text-2xl text-[#FF69B4]"></i>
+          <div class="flex-1">
+            <div class="font-bold text-base mb-1 text-white">Via le formulaire de contact</div>
+            <div class="text-xs text-white/50">Pour les demandes détaillées</div>
+          </div>
+          <i class="fa-solid fa-arrow-right text-white"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+@keyframes flicker {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+</style>
+{% endblock content %}

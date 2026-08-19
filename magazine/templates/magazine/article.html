@@ -1,0 +1,142 @@
+{% extends 'magazine/base.html' %}
+{% load static %}
+
+{% block title %}{{ article.titre }} — Be a Queen Magazine{% endblock title %}
+
+{% block content %}
+<article class="bg-white py-12 lg:py-20 min-h-screen">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- BREADCRUMB -->
+    <nav aria-label="Breadcrumb" class="mb-10 pb-4 border-b border-gray-100">
+      <ol class="flex items-center gap-2 flex-wrap text-xs font-bold tracking-widest uppercase text-gray-400">
+        <li><a href="/" class="hover:text-[#FF1493] transition-colors flex items-center gap-1.5"><i class="fa-solid fa-house"></i> Accueil</a></li>
+        <li class="opacity-40">›</li>
+        <li><a href="{% url 'rubrique' article.rubrique.slug %}" class="hover:text-[#FF1493] transition-colors">{{ article.rubrique.nom }}</a></li>
+        <li class="opacity-40">›</li>
+        <li class="text-[#FF1493]">{{ article.titre|truncatechars:40 }}</li>
+      </ol>
+    </nav>
+
+    <!-- HEADER ARTICLE -->
+    <header class="mb-10 text-center sm:text-left">
+      <span class="inline-block bg-[#FFF0F5] text-[#FF1493] text-[10px] font-bold tracking-widest uppercase px-3 py-1.5 mb-4">
+        {{ article.rubrique.nom }}
+      </span>
+      <h1 class="font-serif text-3xl sm:text-5xl font-black text-black leading-tight mb-6">
+        {{ article.titre }}
+      </h1>
+      <div class="flex items-center sm:justify-start justify-center flex-wrap gap-3 text-xs text-gray-500 border-y border-gray-100 py-4 font-medium uppercase tracking-wider">
+        <span>Par <strong class="text-black">{{ article.auteure.nom|default:"Sandra Pamela" }}</strong></span>
+        <span class="opacity-30 hidden sm:inline">·</span>
+        <span class="flex items-center gap-1.5"><i class="fa-regular fa-calendar text-[#FF1493]"></i> {{ article.date_publication|date:"d M Y" }}</span>
+        <span class="opacity-30 hidden sm:inline">·</span>
+        <span class="flex items-center gap-1.5"><i class="fa-regular fa-clock text-[#FF1493]"></i> {{ article.temps_lecture }} min</span>
+        <span class="opacity-30 hidden sm:inline">·</span>
+        <span class="flex items-center gap-1.5"><i class="fa-regular fa-eye text-[#FF1493]"></i> {{ article.vues }} vues</span>
+      </div>
+    </header>
+
+    <!-- IMAGE DE COUVERTURE -->
+    <div class="aspect-video w-full overflow-hidden bg-gray-50 mb-12">
+      {% if article.image_principale %}
+      <img src="{{ article.image_principale.url }}" alt="{{ article.titre }}" class="w-full h-full object-cover">
+      {% else %}
+      <div class="w-full h-full bg-gradient-to-br from-[#FFF0F5] to-[#FFB6C1]/30 flex items-center justify-center text-6xl text-[#FF1493]/20">
+        <i class="fa-solid fa-crown"></i>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- CORPS DE L'ARTICLE -->
+    <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed font-sans mb-16">
+      {{ article.contenu|linebreaks }}
+    </div>
+
+    <!-- SECTION COMMENTAIRES -->
+    <div class="border-t-4 border-black pt-12">
+      <div class="flex items-center gap-3 mb-8">
+        <i class="fa-solid fa-comments text-2xl text-[#FF1493]"></i>
+        <h3 class="font-serif text-2xl font-bold text-black m-0">Discussion ({{ commentaires.count }})</h3>
+      </div>
+      
+      <!-- Liste -->
+      <div class="space-y-6 mb-12">
+        {% for comment in commentaires %}
+        <div class="bg-gray-50 p-6 border-l-4 border-[#FF1493]">
+          <div class="flex justify-between items-center mb-3">
+            <span class="font-bold text-sm text-black">{{ comment.auteur_nom }}</span>
+            <span class="text-xs text-gray-400"><i class="fa-regular fa-clock mr-1"></i> {{ comment.date_creation|date:"d M Y à H:i" }}</span>
+          </div>
+          <div class="text-sm text-gray-600 leading-relaxed">
+            {{ comment.contenu|linebreaksbr }}
+          </div>
+        </div>
+        {% empty %}
+        <div class="text-center py-10 bg-gray-50 border border-gray-100 italic text-sm text-gray-400">
+          Soyez la première à laisser un commentaire !
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Formulaire -->
+      <div class="bg-white border border-gray-200 p-8 sm:p-10">
+        <h3 class="font-serif text-xl font-bold text-black mb-2">Partagez votre avis</h3>
+        <p class="text-xs text-gray-500 mb-6">
+          Votre adresse email ne sera pas publiée. Les commentaires sont modérés avant publication.
+        </p>
+        <form method="POST" action="{% url 'commenter' article.slug %}" class="flex flex-col gap-4">
+          {% csrf_token %}
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="flex flex-col gap-1.5">
+              <label for="nom" class="text-[11px] font-bold tracking-widest uppercase text-black">Nom ou Pseudo</label>
+              <input type="text" id="nom" name="nom" class="border-[1.5px] border-gray-200 px-4 py-3 text-sm focus:border-[#FF1493] outline-none" placeholder="Ex: Amina" required>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="email" class="text-[11px] font-bold tracking-widest uppercase text-black">Adresse email</label>
+              <input type="email" id="email" name="email" class="border-[1.5px] border-gray-200 px-4 py-3 text-sm focus:border-[#FF1493] outline-none" placeholder="Ex: amina@email.com" required>
+            </div>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label for="contenu" class="text-[11px] font-bold tracking-widest uppercase text-black">Votre commentaire</label>
+            <textarea id="contenu" name="contenu" rows="4" class="border-[1.5px] border-gray-200 px-4 py-3 text-sm focus:border-[#FF1493] outline-none resize-y" placeholder="Écrivez votre message ici..." required></textarea>
+          </div>
+          <button type="submit" class="btn-primary justify-center mt-2">Publier le commentaire</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</article>
+
+<!-- ARTICLES SIMILAIRES -->
+{% if articles_similaires %}
+<section class="py-16 bg-gray-50 border-t border-gray-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+    <div class="section-eyebrow mb-8"><i class="fa-solid fa-book-open"></i> À découvrir aussi</div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+      {% for art in articles_similaires %}
+      <article class="bg-white border border-gray-100 group overflow-hidden hover:shadow-lg transition-shadow">
+        <div class="aspect-video overflow-hidden relative bg-gray-100">
+          {% if art.image_principale %}
+          <img src="{{ art.image_principale.url }}" alt="{{ art.titre }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+          {% else %}
+          <div class="w-full h-full flex items-center justify-center text-[#FF1493]/20 text-4xl">👑</div>
+          {% endif %}
+        </div>
+        <div class="p-6">
+          <span class="tag-rubrique">{{ art.rubrique.nom }}</span>
+          <h3 class="font-serif text-lg font-bold text-black mb-3 leading-snug">
+            <a href="{% url 'article' art.slug %}" class="no-underline hover:text-[#FF1493] transition-colors">{{ art.titre }}</a>
+          </h3>
+          <p class="text-xs text-gray-500 mb-4 line-clamp-2 leading-relaxed">{{ art.extrait }}</p>
+          <a href="{% url 'article' art.slug %}" class="lire-lien">Lire <i class="fa-solid fa-arrow-right text-[9px]"></i></a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% endblock content %}
