@@ -229,15 +229,15 @@ def produit_detail(request, slug):
 # ============================================================
 
 def statistiques(request):
+    import json
     aujourd_hui = timezone.now().date()
 
     # --- Visites par jour (les 30 derniers jours) ---
     debut_mois = aujourd_hui - timedelta(days=29)
     visites_30j = VisiteSite.objects.filter(date__gte=debut_mois).order_by('date')
 
-    # Dictionnaire de correspondance des dates
     visites_dict = {v.date: v.nombre_visites for v in visites_30j}
-    
+
     labels_jours = []
     data_jours   = []
     for i in range(30):
@@ -251,34 +251,35 @@ def statistiques(request):
     for i in range(11, -1, -1):
         debut_sem = aujourd_hui - timedelta(weeks=i+1) + timedelta(days=1)
         fin_sem   = aujourd_hui - timedelta(weeks=i)
-        
-        # Récupération des visites enregistrées dans cette période de 7 jours
         visites_semaine = VisiteSite.objects.filter(date__gte=debut_sem, date__lte=fin_sem)
         total_semaine_val = visites_semaine.aggregate(t=Sum('nombre_visites'))['t'] or 0
-        
-        labels_semaines.append(f"S {debut_sem.strftime('%d/%m')}")
+        labels_semaines.append(f"Sem. {debut_sem.strftime('%d/%m')}")
         data_semaines.append(total_semaine_val)
 
     # --- Totaux ---
-    total_global   = VisiteSite.objects.aggregate(t=Sum('nombre_visites'))['t'] or 0
-    total_ce_mois  = sum(data_jours)
-    total_semaine  = data_semaines[-1] if data_semaines else 0
-    total_aujourd  = visites_dict.get(aujourd_hui, 0)
+    total_global  = VisiteSite.objects.aggregate(t=Sum('nombre_visites'))['t'] or 0
+    total_ce_mois = sum(data_jours)
+    total_semaine = data_semaines[-1] if data_semaines else 0
+    total_aujourd = visites_dict.get(aujourd_hui, 0)
 
     # --- Tableau des 14 derniers jours ---
+    max_visites = max([visites_dict.get(aujourd_hui - timedelta(days=i), 0) for i in range(14)] or [1])
     derniers_jours = []
     for i in range(14):
         jour = aujourd_hui - timedelta(days=i)
+        nb = visites_dict.get(jour, 0)
+        pct = int((nb / max_visites) * 100) if max_visites > 0 else 0
         derniers_jours.append({
             'date'   : jour.strftime('%A %d %B %Y'),
-            'visites': visites_dict.get(jour, 0)
+            'visites': nb,
+            'pct'    : pct,
         })
 
     context = {
-        'labels_jours'   : labels_jours,
-        'data_jours'     : data_jours,
-        'labels_semaines': labels_semaines,
-        'data_semaines'  : data_semaines,
+        'labels_jours'   : json.dumps(labels_jours),
+        'data_jours'     : json.dumps(data_jours),
+        'labels_semaines': json.dumps(labels_semaines),
+        'data_semaines'  : json.dumps(data_semaines),
         'total_global'   : total_global,
         'total_ce_mois'  : total_ce_mois,
         'total_semaine'  : total_semaine,
