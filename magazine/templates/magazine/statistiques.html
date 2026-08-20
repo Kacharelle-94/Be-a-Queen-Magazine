@@ -22,28 +22,28 @@
         <div class="text-[11px] font-bold tracking-widest uppercase text-gray-400 mb-2 flex items-center gap-2">
           <i class="fa-solid fa-calendar-day text-[#FF1493]"></i> Aujourd&rsquo;hui
         </div>
-        <div class="text-4xl font-black text-[#FF1493]">{{ total_aujourd }}</div>
+        <div class="text-4xl font-black text-[#FF1493]">{{ total_aujourd|default:0 }}</div>
         <div class="text-xs text-gray-400 mt-1">visiteur(s)</div>
       </div>
       <div class="bg-white border-l-4 border-[#D4AF37] p-6 shadow-sm">
         <div class="text-[11px] font-bold tracking-widest uppercase text-gray-400 mb-2 flex items-center gap-2">
           <i class="fa-solid fa-calendar-week text-[#D4AF37]"></i> Cette semaine
         </div>
-        <div class="text-4xl font-black text-[#D4AF37]">{{ total_semaine }}</div>
+        <div class="text-4xl font-black text-[#D4AF37]">{{ total_semaine|default:0 }}</div>
         <div class="text-xs text-gray-400 mt-1">visiteur(s)</div>
       </div>
       <div class="bg-white border-l-4 border-black p-6 shadow-sm">
         <div class="text-[11px] font-bold tracking-widest uppercase text-gray-400 mb-2 flex items-center gap-2">
           <i class="fa-solid fa-calendar-days text-black"></i> Ce mois (30j)
         </div>
-        <div class="text-4xl font-black text-black">{{ total_ce_mois }}</div>
+        <div class="text-4xl font-black text-black">{{ total_ce_mois|default:0 }}</div>
         <div class="text-xs text-gray-400 mt-1">visiteur(s)</div>
       </div>
       <div class="bg-[#FF1493] p-6 shadow-sm">
         <div class="text-[11px] font-bold tracking-widest uppercase text-white/70 mb-2 flex items-center gap-2">
           <i class="fa-solid fa-crown text-[#D4AF37]"></i> Total global
         </div>
-        <div class="text-4xl font-black text-white">{{ total_global }}</div>
+        <div class="text-4xl font-black text-white">{{ total_global|default:0 }}</div>
         <div class="text-xs text-white/60 mt-1">visiteur(s) uniques</div>
       </div>
     </div>
@@ -55,14 +55,18 @@
           <h2 class="font-serif text-xl font-bold text-black">Visites par jour</h2>
           <span class="text-[10px] font-bold tracking-widest uppercase text-[#FF1493] bg-pink-50 px-3 py-1 border border-[#FF1493]/20">30 derniers jours</span>
         </div>
-        <canvas id="chartJours" style="max-height:280px;"></canvas>
+        <div class="relative w-full h-64">
+          <canvas id="chartJours"></canvas>
+        </div>
       </div>
       <div class="bg-white border border-gray-100 p-6 shadow-sm">
         <div class="flex items-center justify-between mb-4">
           <h2 class="font-serif text-xl font-bold text-black">Visites par semaine</h2>
           <span class="text-[10px] font-bold tracking-widest uppercase text-[#D4AF37] bg-yellow-50 px-3 py-1 border border-[#D4AF37]/30">12 derni&egrave;res semaines</span>
         </div>
-        <canvas id="chartSemaines" style="max-height:280px;"></canvas>
+        <div class="relative w-full h-64">
+          <canvas id="chartSemaines"></canvas>
+        </div>
       </div>
     </div>
 
@@ -88,11 +92,11 @@
               <td class="px-4 py-3 text-center">
                 <span class="inline-block bg-[#FF1493] text-white text-xs font-bold px-3 py-1 min-w-[36px] text-center">{{ jour.visites }}</span>
               </td>
-              <td class="px-6 py-3">
-                <div style="height:8px; background:#f3f4f6; border-radius:4px; overflow:hidden; width:100%;">
-                  <div style="height:100%; width:{{ jour.pct }}%; background:linear-gradient(to right,#FF1493,#D4AF37); border-radius:4px;"></div>
-                </div>
-              </td>
+             <td class="px-6 py-3">
+              <div class="h-2 w-full bg-gray-100 rounded overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-[#FF1493] to-[#D4AF37] rounded" data-pct="{{ jour.pct|default:0 }}" style="width: 0%;"></div>
+              </div>
+            </td>
             </tr>
             {% empty %}
             <tr>
@@ -116,63 +120,80 @@
   </div>
 </section>
 
+<!-- Données sécurisées pour JavaScript -->
+{{ labels_jours|json_script:"labels-jours-data" }}
+{{ data_jours|json_script:"data-jours-data" }}
+{{ labels_semaines|json_script:"labels-semaines-data" }}
+{{ data_semaines|json_script:"data-semaines-data" }}
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 <script>
-var labelsJours    = {{ labels_jours|safe }};
-var dataJours      = {{ data_jours|safe }};
-var labelsSemaines = {{ labels_semaines|safe }};
-var dataSemaines   = {{ data_semaines|safe }};
+document.addEventListener("DOMContentLoaded", function () {
+  // Lecture sécurisée du JSON sans risque d'erreur de syntaxe
+  const labelsJours = JSON.parse(document.getElementById('labels-jours-data').textContent || '[]');
+  const dataJours = JSON.parse(document.getElementById('data-jours-data').textContent || '[]');
+  const labelsSemaines = JSON.parse(document.getElementById('labels-semaines-data').textContent || '[]');
+  const dataSemaines = JSON.parse(document.getElementById('data-semaines-data').textContent || '[]');
 
-new Chart(document.getElementById('chartJours'), {
-  type: 'bar',
-  data: {
-    labels: labelsJours,
-    datasets: [{
-      label: 'Visiteurs',
-      data: dataJours,
-      backgroundColor: 'rgba(255,20,147,0.15)',
-      borderColor: '#FF1493',
-      borderWidth: 2,
-      borderRadius: 4
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: true,
-    plugins: { legend: { display: false } },
-    scales: {
-      y: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 }, grid: { color: '#f3f4f6' } },
-      x: { grid: { display: false }, ticks: { maxTicksLimit: 10 } }
-    }
+  // Graphique Jours
+  const ctxJours = document.getElementById('chartJours');
+  if (ctxJours) {
+    new Chart(ctxJours, {
+      type: 'bar',
+      data: {
+        labels: labelsJours,
+        datasets: [{
+          label: 'Visiteurs',
+          data: dataJours,
+          backgroundColor: 'rgba(255,20,147,0.15)',
+          borderColor: '#FF1493',
+          borderWidth: 2,
+          borderRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 }, grid: { color: '#f3f4f6' } },
+          x: { grid: { display: false }, ticks: { maxTicksLimit: 10 } }
+        }
+      }
+    });
   }
-});
 
-new Chart(document.getElementById('chartSemaines'), {
-  type: 'line',
-  data: {
-    labels: labelsSemaines,
-    datasets: [{
-      label: 'Visiteurs',
-      data: dataSemaines,
-      backgroundColor: 'rgba(212,175,55,0.10)',
-      borderColor: '#D4AF37',
-      borderWidth: 2.5,
-      pointBackgroundColor: '#D4AF37',
-      pointBorderColor: '#fff',
-      pointBorderWidth: 2,
-      pointRadius: 5,
-      fill: true,
-      tension: 0.4
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: true,
-    plugins: { legend: { display: false } },
-    scales: {
-      y: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 }, grid: { color: '#f3f4f6' } },
-      x: { grid: { display: false } }
-    }
+  // Graphique Semaines
+  const ctxSemaines = document.getElementById('chartSemaines');
+  if (ctxSemaines) {
+    new Chart(ctxSemaines, {
+      type: 'line',
+      data: {
+        labels: labelsSemaines,
+        datasets: [{
+          label: 'Visiteurs',
+          data: dataSemaines,
+          backgroundColor: 'rgba(212,175,55,0.10)',
+          borderColor: '#D4AF37',
+          borderWidth: 2.5,
+          pointBackgroundColor: '#D4AF37',
+          pointBorderColor: '#fff',
+          pointBorderWidth: 2,
+          pointRadius: 5,
+          fill: true,
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 }, grid: { color: '#f3f4f6' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
   }
 });
 </script>
