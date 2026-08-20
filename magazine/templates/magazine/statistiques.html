@@ -1,1 +1,179 @@
-﻿
+{% extends 'magazine/base.html' %}
+{% load static %}
+
+{% block title %}Statistiques de Visites — Be a Queen Magazine{% endblock %}
+
+{% block content %}
+<section class="min-h-screen py-14 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+
+    <!-- En-tete -->
+    <div class="mb-10">
+      <div class="section-eyebrow"><i class="fa-solid fa-chart-line"></i> Tableau de bord</div>
+      <h1 class="font-serif text-4xl sm:text-5xl font-black text-black leading-tight mt-2">
+        Statistiques <em class="italic text-[#FF1493]">du site</em>
+      </h1>
+      <p class="text-gray-500 mt-3 text-base max-w-xl">Vue d&rsquo;ensemble des visites de Be a Queen Magazine &mdash; mise &agrave; jour en temps r&eacute;el.</p>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
+      <div class="bg-white border-l-4 border-[#FF1493] p-6 shadow-sm">
+        <div class="text-[11px] font-bold tracking-widest uppercase text-gray-400 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-calendar-day text-[#FF1493]"></i> Aujourd&rsquo;hui
+        </div>
+        <div class="text-4xl font-black text-[#FF1493]">{{ total_aujourd }}</div>
+        <div class="text-xs text-gray-400 mt-1">visiteur(s)</div>
+      </div>
+      <div class="bg-white border-l-4 border-[#D4AF37] p-6 shadow-sm">
+        <div class="text-[11px] font-bold tracking-widest uppercase text-gray-400 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-calendar-week text-[#D4AF37]"></i> Cette semaine
+        </div>
+        <div class="text-4xl font-black text-[#D4AF37]">{{ total_semaine }}</div>
+        <div class="text-xs text-gray-400 mt-1">visiteur(s)</div>
+      </div>
+      <div class="bg-white border-l-4 border-black p-6 shadow-sm">
+        <div class="text-[11px] font-bold tracking-widest uppercase text-gray-400 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-calendar-days text-black"></i> Ce mois (30j)
+        </div>
+        <div class="text-4xl font-black text-black">{{ total_ce_mois }}</div>
+        <div class="text-xs text-gray-400 mt-1">visiteur(s)</div>
+      </div>
+      <div class="bg-[#FF1493] p-6 shadow-sm">
+        <div class="text-[11px] font-bold tracking-widest uppercase text-white/70 mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-crown text-[#D4AF37]"></i> Total global
+        </div>
+        <div class="text-4xl font-black text-white">{{ total_global }}</div>
+        <div class="text-xs text-white/60 mt-1">visiteur(s) uniques</div>
+      </div>
+    </div>
+
+    <!-- Graphiques -->
+    <div class="grid lg:grid-cols-2 gap-8 mb-10">
+      <div class="bg-white border border-gray-100 p-6 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="font-serif text-xl font-bold text-black">Visites par jour</h2>
+          <span class="text-[10px] font-bold tracking-widest uppercase text-[#FF1493] bg-pink-50 px-3 py-1 border border-[#FF1493]/20">30 derniers jours</span>
+        </div>
+        <canvas id="chartJours" style="max-height:280px;"></canvas>
+      </div>
+      <div class="bg-white border border-gray-100 p-6 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="font-serif text-xl font-bold text-black">Visites par semaine</h2>
+          <span class="text-[10px] font-bold tracking-widest uppercase text-[#D4AF37] bg-yellow-50 px-3 py-1 border border-[#D4AF37]/30">12 derni&egrave;res semaines</span>
+        </div>
+        <canvas id="chartSemaines" style="max-height:280px;"></canvas>
+      </div>
+    </div>
+
+    <!-- Tableau -->
+    <div class="bg-white border border-gray-100 shadow-sm overflow-hidden mb-10">
+      <div class="px-6 py-5 border-b border-gray-100 flex items-center gap-3">
+        <i class="fa-solid fa-table-list text-[#FF1493] text-lg"></i>
+        <h2 class="font-serif text-xl font-bold text-black">D&eacute;tail &mdash; 14 derniers jours</h2>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-gray-50 border-b border-gray-100">
+              <th class="text-left px-6 py-3 text-[11px] font-bold tracking-widest uppercase text-gray-400">Date</th>
+              <th class="text-center px-4 py-3 text-[11px] font-bold tracking-widest uppercase text-gray-400">Visiteurs</th>
+              <th class="text-left px-6 py-3 text-[11px] font-bold tracking-widest uppercase text-gray-400" style="width:50%">Progression</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for jour in derniers_jours %}
+            <tr class="border-b border-gray-50 hover:bg-pink-50/30 transition-colors">
+              <td class="px-6 py-3 text-gray-700 font-medium capitalize text-sm">{{ jour.date }}</td>
+              <td class="px-4 py-3 text-center">
+                <span class="inline-block bg-[#FF1493] text-white text-xs font-bold px-3 py-1 min-w-[36px] text-center">{{ jour.visites }}</span>
+              </td>
+              <td class="px-6 py-3">
+                <div style="height:8px; background:#f3f4f6; border-radius:4px; overflow:hidden; width:100%;">
+                  <div style="height:100%; width:{{ jour.pct }}%; background:linear-gradient(to right,#FF1493,#D4AF37); border-radius:4px;"></div>
+                </div>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="3" class="px-6 py-12 text-center text-gray-400 text-sm">
+                <i class="fa-solid fa-chart-simple text-3xl text-gray-200 block mb-3"></i>
+                Aucune donn&eacute;e encore. Les visites apparaitront ici automatiquement.
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <a href="/admin/" class="btn-secondary text-xs inline-flex items-center gap-2">
+        <i class="fa-solid fa-arrow-left"></i> Retour Admin
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script>
+var labelsJours    = {{ labels_jours|safe }};
+var dataJours      = {{ data_jours|safe }};
+var labelsSemaines = {{ labels_semaines|safe }};
+var dataSemaines   = {{ data_semaines|safe }};
+
+new Chart(document.getElementById('chartJours'), {
+  type: 'bar',
+  data: {
+    labels: labelsJours,
+    datasets: [{
+      label: 'Visiteurs',
+      data: dataJours,
+      backgroundColor: 'rgba(255,20,147,0.15)',
+      borderColor: '#FF1493',
+      borderWidth: 2,
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 }, grid: { color: '#f3f4f6' } },
+      x: { grid: { display: false }, ticks: { maxTicksLimit: 10 } }
+    }
+  }
+});
+
+new Chart(document.getElementById('chartSemaines'), {
+  type: 'line',
+  data: {
+    labels: labelsSemaines,
+    datasets: [{
+      label: 'Visiteurs',
+      data: dataSemaines,
+      backgroundColor: 'rgba(212,175,55,0.10)',
+      borderColor: '#D4AF37',
+      borderWidth: 2.5,
+      pointBackgroundColor: '#D4AF37',
+      pointBorderColor: '#fff',
+      pointBorderWidth: 2,
+      pointRadius: 5,
+      fill: true,
+      tension: 0.4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 }, grid: { color: '#f3f4f6' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+</script>
+{% endblock %}
