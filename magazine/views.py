@@ -1,8 +1,14 @@
-from django.shortcuts import render, get_object_or_404
+import json
+from datetime import timedelta
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
+from django.db.models import Sum
+from django.core.mail import send_mail
+from django.conf import settings
+
 from .models import (
     Article, Rubrique, Chronique,
-    Newsletter, Contact, Commentaire
+    Newsletter, Contact, Commentaire, VisiteSite
 )
 
 
@@ -82,7 +88,7 @@ def article(request, slug):
     ).exclude(id=art.id).order_by('-date_publication')[:3]
 
     context = {
-        'article'           : art,
+        'article'            : art,
         'commentaires'      : commentaires,
         'articles_similaires': articles_similaires,
     }
@@ -132,10 +138,6 @@ def contact(request):
 # NEWSLETTER (inscription)
 # ============================================================
 
-from django.core.mail import send_mail
-from django.conf import settings
-from django.shortcuts import redirect
-
 def newsletter(request):
     if request.method == 'POST':
         email  = request.POST.get('email', '').strip()
@@ -143,7 +145,6 @@ def newsletter(request):
         source = request.POST.get('source', 'accueil')
 
         if email:
-            # Vérifier si l'email existe déjà pour ne pas renvoyer le mail de bienvenue
             obj, created = Newsletter.objects.get_or_create(
                 email=email,
                 defaults={
@@ -153,8 +154,6 @@ def newsletter(request):
                 }
             )
 
-            # NOTE: J'ai retiré temporairement la condition "if created:" pour que tu puisses 
-            # tester avec ton adresse email autant de fois que tu veux !
             sujet = "👑 Bienvenue dans la communauté des Reines !"
             message = f"""Bonjour {prenom if prenom else 'Reine'},
 
@@ -178,10 +177,8 @@ Fondatrice de Be a Queen Magazine
                     fail_silently=False,
                 )
             except Exception as e:
-                # Afficher l'erreur dans la console pour comprendre ce qui bloque
                 print(f"============== ERREUR D'ENVOI D'EMAIL ==============\n{e}\n====================================================")
 
-    # Redirection vers l'accueil après inscription
     return redirect('accueil')
 
 
@@ -201,15 +198,11 @@ def ajouter_commentaire(request, slug):
             approuve     = False,
         )
 
-    from django.shortcuts import redirect
     return redirect('article', slug=slug)
 
-def statistiques(request):
-    # Votre logique de vue ici
-    return render(request, 'magazine/statistiques.html')
 
 # ============================================================
-# PRODUITS & BOUTIQUE (ajout)
+# PRODUITS & BOUTIQUE
 # ============================================================
 
 def produits(request):
@@ -218,12 +211,11 @@ def produits(request):
     """
     return render(request, 'magazine/produits.html')
 
+
 def produit_detail(request, slug):
     """
     Affiche les détails d'un produit ou service spécifique.
-    Prépare le terrain pour la vente future.
     """
-    # Pour l'instant, titre factice basé sur le slug
     titre_produit = slug.replace('-', ' ').title()
     
     return render(request, 'magazine/produit_detail.html', {
@@ -237,20 +229,15 @@ def produit_detail(request, slug):
 # ============================================================
 
 def statistiques(request):
-    from .models import VisiteSite
-    from django.utils import timezone
-    from datetime import timedelta
-    from django.db.models import Sum
-    import json
-
     aujourd_hui = timezone.now().date()
 
     # --- Visites par jour (les 30 derniers jours) ---
     debut_mois = aujourd_hui - timedelta(days=29)
     visites_30j = VisiteSite.objects.filter(date__gte=debut_mois).order_by('date')
 
-    # Construire un dictionnaire complet (même les jours sans visite = 0)
+    # Dictionnaire de correspondance des dates
     visites_dict = {v.date: v.nombre_visites for v in visites_30j}
+    
     labels_jours = []
     data_jours   = []
     for i in range(30):
@@ -264,12 +251,13 @@ def statistiques(request):
     for i in range(11, -1, -1):
         debut_sem = aujourd_hui - timedelta(weeks=i+1) + timedelta(days=1)
         fin_sem   = aujourd_hui - timedelta(weeks=i)
-        total = sum(
-            visites_dict.get(debut_sem + timedelta(days=d), 0)
-            for d in range(7)
-        )
+        
+        # Récupération des visites enregistrées dans cette période de 7 jours
+        visites_semaine = VisiteSite.objects.filter(date__gte=debut_sem, date__lte=fin_sem)
+        total_semaine_val = visites_semaine.aggregate(t=Sum('nombre_visites'))['t'] or 0
+        
         labels_semaines.append(f"S {debut_sem.strftime('%d/%m')}")
-        data_semaines.append(total)
+        data_semaines.append(total_semaine_val)
 
     # --- Totaux ---
     total_global   = VisiteSite.objects.aggregate(t=Sum('nombre_visites'))['t'] or 0
@@ -277,7 +265,7 @@ def statistiques(request):
     total_semaine  = data_semaines[-1] if data_semaines else 0
     total_aujourd  = visites_dict.get(aujourd_hui, 0)
 
-    # --- Derniers jours tableau ---
+    # --- Tableau des 14 derniers jours ---
     derniers_jours = []
     for i in range(14):
         jour = aujourd_hui - timedelta(days=i)
@@ -287,10 +275,10 @@ def statistiques(request):
         })
 
     context = {
-        'labels_jours'   : json.dumps(labels_jours),
-        'data_jours'     : json.dumps(data_jours),
-        'labels_semaines': json.dumps(labels_semaines),
-        'data_semaines'  : json.dumps(data_semaines),
+        'labels_jours'   : labels_jours,
+        'data_jours'     : data_jours,
+        'labels_semaines': labels_semaines,
+        'data_semaines'  : data_semaines,
         'total_global'   : total_global,
         'total_ce_mois'  : total_ce_mois,
         'total_semaine'  : total_semaine,
